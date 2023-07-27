@@ -34,6 +34,9 @@ class ServerCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -53,7 +56,7 @@ class ServerCommand extends Command
      * @return int
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
+     * @throws Exception
      */
     public function restart(InputInterface $input): int
     {
