@@ -65,22 +65,12 @@ class Server
         on(OnWorkerStart::class, [$this, 'setWorkerName']);
         on(OnTaskerStart::class, [$this, 'setTaskerName']);
 
-        $this->hotLoad();
+        $manager = Kiri::getDi()->get(Router::class);
+        $manager->scan_build_route();
 
         $manager = $this->manager();
         $manager->initCoreServers(\config('server', []), $this->daemon);
         $manager->start();
-    }
-
-
-    /**
-     * @return void
-     * @throws ReflectionException
-     */
-    public function hotLoad(): void
-    {
-        $manager = Kiri::getDi()->get(Router::class);
-        $manager->scan_build_route();
     }
 
 

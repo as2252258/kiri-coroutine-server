@@ -18,8 +18,12 @@ class ServerCommand extends Command
 {
 
 
+    protected Server $server;
+
+
     /**
      * @return void
+     * @throws ReflectionException
      */
     protected function configure(): void
     {
@@ -41,6 +45,7 @@ class ServerCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->server = \Kiri::getDi()->get(Server::class);
         return match ($input->getArgument('action')) {
             'restart' => $this->restart($input),
             'stop'    => $this->stop(),
@@ -60,9 +65,8 @@ class ServerCommand extends Command
      */
     public function restart(InputInterface $input): int
     {
-        $server = \Kiri::getDi()->get(Server::class);
-        $server->shutdown();
-        $server->start();
+        $this->server->shutdown();
+        $this->server->start();
         return 1;
     }
 
@@ -71,12 +75,10 @@ class ServerCommand extends Command
      * @return int
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
      */
     public function stop(): int
     {
-        $server = \Kiri::getDi()->get(Server::class);
-        $server->shutdown();
+        $this->server->shutdown();
         return 1;
     }
 
@@ -84,12 +86,11 @@ class ServerCommand extends Command
     /**
      * @param InputInterface $input
      * @return int
-     * @throws ReflectionException
+     * @throws Exception
      */
     public function start(InputInterface $input): int
     {
-        $server = \Kiri::getDi()->get(Server::class);
-        $server->start();
+        $this->server->start();
         return 1;
     }
 
